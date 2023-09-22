@@ -19,7 +19,7 @@ def static_vars(**kwargs):
     return decorate
 
 @static_vars(Lat=0, Lng =0)
-def PrevGPS(Lat, Lng):
+def PrevGPS(Lat: int, Lng: int) -> bool:
      ret = False
      tol = 1
      if abs(PrevGPS.Lat - Lat) >= tol or abs(PrevGPS.Lng - Lng) >= tol:
@@ -35,7 +35,7 @@ def readGPSdata(ser):
         if reading:
             evalGPSdata(reading)
 
-def evalGPSdata(reading):
+def evalGPSdata(reading: str):
     regex = r'\$GPGLL.*,(\d+)(\d{2,2}[\.]\d+),([N]),(\d+)(\d{2,2}[\.]\d+),([W])'
     eval = re.findall(regex,reading)
     if len(eval) > 0:
@@ -43,13 +43,10 @@ def evalGPSdata(reading):
 
         Lat, Lng = calcGPSdata(latdgr, latmin, latdir, lngdgr, lngmin, lngdir)
 
-        evalLat = int((Lat % 1) * 100000)
-        evalLng = int((Lng % 1) * 100000)
-
-        if PrevGPS(evalLat, evalLng):
+        if PrevGPS(int((Lat % 1) * 100000), int((Lng % 1) * 100000)):
             recGPSdata(Lat, Lng)
 
-def calcGPSdata(latdgr, latmin, latdir, lngdgr, lngmin, lngdir):
+def calcGPSdata(latdgr: str, latmin: str, latdir: str, lngdgr:str, lngmin:str, lngdir:str) -> tuple:
      Lat = float(latdgr) + (float(latmin) / 60.0)
      Lng = float(lngdgr) + (float(lngmin) / 60.0)
 
@@ -58,9 +55,10 @@ def calcGPSdata(latdgr, latmin, latdir, lngdgr, lngmin, lngdir):
 
      return Lat, Lng
 
-
 def recGPSdata(Lat, Lng):
     strOutput = '{0:.6f},{1:.6f},{2},circle,""'.format(Lat, Lng, next_color())
+
+    # future implementation this block of code will be used to send a m
     with open("gpsLog.txt", "a") as file1:
        file1.write(strOutput + '\n')
 
@@ -71,34 +69,12 @@ def main():
     try:
         ser = serial.Serial(SERIAL_PORT, SERIAL_RATE)
         readGPSdata(ser)
+    except KeyboardInterrupt:
+        print('Exiting Program')
     except Exception as inst :
         print("An error occurred:", type(inst).__name__, '–', inst)
         print("Main Except:")
-        #  proc1 = subprocess.Popen(['lsmod'], stdout=subprocess.PIPE)
-        #  proc2 = subprocess.Popen(['grep', 'usbserial'], stdin=proc1.stdout, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        #  proc1.stdout.close() # Allow proc1 to receive a SIGPIPE if proc2 exits.
-        #  out, err = proc2.communicate()
-        #
-        #  print('Out: {0}'.format(out))
-        #
-        #  regex = r'^(.*?\d?)(\w+)[\\].*$'
-        #  eval = re.findall(regex, str(out))
-        #  if len(eval) > 0:
-        #
-        #      usbPort = str(eval[0][1])
-        #
-        #      #sudo modprobe -r ftdi_sio
-        #      #sudo modprobe -r usbserial
-        #
-        #      #subprocess.run([], stdout=subprocess.PIPE)
-        #      args = ['sudo','modprobe', '-r' , usbPort]
-        #      proc1 = subprocess.Popen(args, stdout=subprocess.PIPE)
-        #      #proc2 = subprocess.Popen(['modprobe', '-r ' + usbPort], stdin=proc1.stdout, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        #      proc1.stdout.close() # Allow proc1 to receive a SIGPIPE if proc2 exits.
-        #      #out, err = proc2.communicate()
-        #
-        #      #print ("OUT:" + out)
         time.sleep(5)
-        ## main()
+
 if __name__ == "__main__":
     main()
