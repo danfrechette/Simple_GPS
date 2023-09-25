@@ -2,4 +2,9 @@ https://github.com/chandrawi/LoRaRF-Python
 https://programmaticponderings.com/2020/08/10/lora-and-lorawan-for-iot-getting-started-with-long-range-and-lorawan-specification-for-low-power-wide-area-networking/
 https://www.micropeta.com/video7
 
+Reyax info:
+Lora AT Commands: https://reyax.com/upload/products_download/download_file/LoRa-AT-Command-RYLR40x_RYLR89x_EN-8.pdf
+
+
+https://www.blackhillsinfosec.com/introducing-lora-long-range-wireless-technology-part-1/
 

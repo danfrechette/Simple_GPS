@@ -1,65 +1,52 @@
-/*************************************************************************************************
- *  Created By: Tauseef Ahmad
- *  Created On: 20 July, 2023
- *  
- *  YouTube Video: https://youtu.be/390JbyaBIjg
- *  My Channel: https://www.youtube.com/@AhmadLogs
- ***********************************************************************************************/
 #include <SoftwareSerial.h>
+
+String IncomingString;
+String AT_Cmd;
+
 SoftwareSerial lora_serial(2, 3); // RX, TX
 
 String FREQUENCY_BAND = "433000000";
-String NETWORK_ID = "7";
-String THIS_DEVICE = "2";
-String OTHER_DEVICE = "1";
+String NETWORK_ID = "7";              // Recommended 1~15
+String NODE_ADDRESS_NATIVE = "2";
+String NODE_ADDRESS_FOREIGN = "1";
+
 bool Flip = true;
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
-  
-  Serial.begin(115200); 
-  delay(1000);
-  Serial.println("Starting Reyax Reciever");
-  
+
+  Serial.begin(115200); delay(1000);
+  Serial.println("Starting Reyax Receiver");
+
   lora_serial.begin(115200); delay(1000);
-  lora_serial.println("AT+BAND="+ FREQUENCY_BAND); delay(1000);
-  lora_serial.println("AT+NETWORKID="+ NETWORK_ID); delay(1000);
-  lora_serial.println("AT+ADDRESS="+ THIS_DEVICE);  delay(1000); 
-  
+  lora_serial.println("AT + BAND="+ FREQUENCY_BAND); delay(1000);
+  lora_serial.println("AT + NETWORKID="+ NETWORK_ID); delay(1000);
+  lora_serial.println("AT + ADDRESS="+ NODE_ADDRESS_NATIVE);  delay(1000);
+  lora_serial.println("AT + PARAMETER = 10,7,1,7"); delay(1000);
+  //lora_serial.println("AT + CPIN=PRWezD8xcipP6BdKzed6X44Hw4uU7X6R"); delay(1000)
+
   Serial.println("Process Initialized");
-  digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void loop() {
-  if(Flip){
-      Serial.println("Reading Lora_Serial. High");
-  } else {
-    Serial.println("Reading Lora_Serial. Low");
-  }
-  
-  while (lora_serial.available()) { 
-    String data = lora_serial.readString();
-    Serial.println("Data:" + data);
-  }  
-  
-  digitalWrite(LED_BUILTIN, Flip == true ? HIGH : LOW);
-  Flip = Flip ? false : true;
-  
-  delay(1000);
-}
 
-//  if (digitalRead(buttonPin) == LOW){ 
-//    relayState = !relayState;
-//    String command = (relayState == true) ? "a1" : "a0";
-//    lora_serial.println(
-//      "AT+SEND="+ OTHER_DEVICE+",2,"+ command);
-//    Serial.println(command);
-//    delay(500); //debounce handling
-//  }    
-//    if(data.indexOf("a1") > 0) { 
-//      digitalWrite(ledPin, HIGH);
-//      relayState = 1;
-//    } else if(data.indexOf("a0") > 0) { 
-//      digitalWrite(ledPin, HIGH);
-//      relayState = 0;
-//    }
+  while (lora_serial.available()) {
+    IncomingString = lora_serial.readString();
+    if(IncomingString.length() > 2){
+      Serial.print("Receiver incoming: "); Serial.println(IncomingString);
+
+      int s = IncomingString.indexOf("["); int e = IncomingString.indexOf("]");
+
+      String Message = "Thanks received : " + ((s > 0 and e > 0) ? IncomingString.substring(s,e) : "");
+
+      AT_Cmd = "AT + SEND =" + NODE_ADDRESS_FOREIGN + ",";
+      AT_Cmd += (AT_Cmd.length(Message) - 2);
+      AT_Cmd += "," + Message;
+
+      Serial.print("Receiver outgoing: "); Serial.println(AT_Cmd);
+      lora_serial.print(AT_Cmd);
+    }
+  }
+
+  digitalWrite(LED_BUILTIN, HIGH); delay(1000); digitalWrite(LED_BUILTIN, LOW);
+}
