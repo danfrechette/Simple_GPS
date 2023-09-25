@@ -1,0 +1,5 @@
+https://github.com/chandrawi/LoRaRF-Python
+https://programmaticponderings.com/2020/08/10/lora-and-lorawan-for-iot-getting-started-with-long-range-and-lorawan-specification-for-low-power-wide-area-networking/
+https://www.micropeta.com/video7
+
+
