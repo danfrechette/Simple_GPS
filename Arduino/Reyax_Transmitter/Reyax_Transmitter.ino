@@ -22,8 +22,8 @@ void setup() {
   lora_serial.println("AT+BAND=" + FREQUENCY_BAND); delay(1000);
   lora_serial.println("AT+NETWORKID=" + NETWORK_ID); delay(1000);
   lora_serial.println("AT+ADDRESS=" + NODE_ADDRESS_NATIVE); delay(1000);
-  lora_serial.println("AT+PARAMETER = 10,7,1,7");  delay(1000);
-  lora_serial.println("AT+CPIN=PRWezD8xcipP6BdKzed6X44Hw4uU7X6R"); delay(1000);
+  lora_serial.println("AT+PARAMETER=10,7,1,7");  delay(1000);
+  lora_serial.println("AT+CPIN=FABC0002EEDCAA90FABC0002EEDCAA90"); delay(1000);
 
   Serial.println("Process Initialized");
 }
@@ -39,7 +39,7 @@ void loop() {
   lora_serial.println(AT_Cmd);
   Serial.print("Transmitter outgoing: "); Serial.println(AT_Cmd);
 
-  delay(2000);
+  delay(1000);
 
   while (lora_serial.available()) {
     IncomingString = lora_serial.readString();
