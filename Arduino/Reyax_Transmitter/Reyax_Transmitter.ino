@@ -15,10 +15,11 @@ int Cntr = 0;
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 
-  Serial.begin(115200); delay(1000);
+  Serial.begin(9600); delay(1000);
   Serial.println("Starting Reyax Transmitter");
 
-  lora_serial.begin(115200); delay(1000);
+  lora_serial.begin(9600); delay(1000);
+  lora_serial.println("AT+IPR=9600");delay(1000);
   lora_serial.println("AT+BAND=" + FREQUENCY_BAND); delay(1000);
   lora_serial.println("AT+NETWORKID=" + NETWORK_ID); delay(1000);
   lora_serial.println("AT+ADDRESS=" + NODE_ADDRESS_NATIVE); delay(1000);
@@ -42,7 +43,8 @@ void loop() {
   delay(1000);
 
   while (lora_serial.available()) {
-    IncomingString = lora_serial.readString();
+    // IncomingString = lora_serial.readString();
+    IncomingString = lora_serial.readStringUntil('\n');
     if(IncomingString.length() > 2){
       Serial.print("Transmitter incoming: "); Serial.println(IncomingString);
     }
