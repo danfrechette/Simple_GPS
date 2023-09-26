@@ -10,7 +10,7 @@ String NETWORK_ID = "7";               // Recommended 1~15
 String NODE_ADDRESS_NATIVE = "1";
 String NODE_ADDRESS_FOREIGN = "2";
 
-Int Cntr = 0;
+int Cntr = 0;
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
@@ -22,18 +22,18 @@ void setup() {
   lora_serial.println("AT+BAND=" + FREQUENCY_BAND); delay(1000);
   lora_serial.println("AT+NETWORKID=" + NETWORK_ID); delay(1000);
   lora_serial.println("AT+ADDRESS=" + NODE_ADDRESS_NATIVE); delay(1000);
-  lora_serial.println("AT + PARAMETER = 10,7,1,7");  delay(1000);
-  //lora_serial.println("AT + CPIN=PRWezD8xcipP6BdKzed6X44Hw4uU7X6R"); delay(1000)
+  lora_serial.println("AT+PARAMETER = 10,7,1,7");  delay(1000);
+  lora_serial.println("AT+CPIN=PRWezD8xcipP6BdKzed6X44Hw4uU7X6R"); delay(1000);
 
   Serial.println("Process Initialized");
 }
 
 void loop() {
 
-  String Message = "Test Message [" + String(++Cntr) + "]";
+  String Message = "Test Message[" + String(++Cntr) + "]\r\n";
 
-  AT_Cmd = "AT + SEND =" + NODE_ADDRESS_FOREIGN + ",";
-  AT_Cmd += (AT_Cmd.length(Message) - 2);
+  AT_Cmd = "AT+SEND=" + NODE_ADDRESS_FOREIGN + ",";
+  AT_Cmd += String(Message.length() - 2);
   AT_Cmd += "," + Message;
 
   lora_serial.println(AT_Cmd);
