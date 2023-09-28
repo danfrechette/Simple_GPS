@@ -1,0 +1,41 @@
+Stage one: (Lora Per to Per)
+Description: Just needed to prove that the devices would communicate to one another.
+
+Establish communication using two "FT232RL USB to Serial Mini USB to TTL Adapter Boards"
+
+Open Arduino Serial monitor, set line return for New line and carriage
+Baud to 115200
+
+Send AT commands to initialize the device #1 (RYLR405 Connected to my Laptop)
+Note: after each AT command you should see a response like: +OK
+	AT
+	AT+BAND=433000000
+	AT+NETWORKID=7
+	AT+ADDRESS=1
+	AT+PARAMETER=10,7,1,7
+	AT+CPIN=FABC0002EEDCAA90FABC0002EEDCAA90
+
+Send AT commands to initialize the device #2 (RYLR405 Connected to my Ubuntu system Using RDP)
+Note: after each AT command you should see a response like: +OK
+	AT
+	AT+BAND=433000000
+	AT+NETWORKID=7
+	AT+ADDRESS=2
+	AT+PARAMETER=10,7,1,7
+	AT+CPIN=FABC0002EEDCAA90FABC0002EEDCAA90
+
+Send AT Message to device #1 from device #1 (RYLR405 Connected to my Laptop)
+Note: After each AT+Send command you should see a response like: +OK on device #1
+device #2 should print a message starting with +RCV such as +RCV=1,5,HELLO,-99,40
+
+	AT+SEND=2,5,HELLO
+
+Send AT Message to device #2 from device #1 (RYLR405 Connected to my Laptop)
+Note: After each AT+Send command you should see a response like: +OK on device #2
+device #1 should print a message starting with +RCV such as +RCV=2,5,HELLO,-99,40
+	AT+SEND=2,5,HELLO
+
+If failure occurs sent the following AT command and repeat the above.
+Note: after each AT command you should see a responce like: +FACTORY
+
+	AT+FACTORY

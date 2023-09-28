@@ -1,0 +1,36 @@
+Stage 2: Arduino sketch to FT232RL communication for Lora Device
+Description: Stage two was used to validate an that my Arduino sketch could configure the
+Reyax device and send a Hello message to device #2 connected to the Ubuntu system.
+
+Steps:
+    Stage 1, proved that device #1 and device #2 could communicate.  I left device #2 untouched
+    and used it as a fixed device which I knew was configured correctly.  Device #1 was re-purposed
+    and paired with an Arduino Nano.  The serial communication to the Lora device will use
+    the SoftwareSerial.h library on pins 2 and 3.
+
+
+    I first started with the creating a new Arduino sketch named Reyax_Hello.ino
+    The sketch does the following activities.
+
+    1: Sets the Software Serial pins for the read and write to pins 2 and 3.
+    2: Creates a Serial connection to both the Arduino Serial monitor (baud rate 9600)
+       and the lora module (baud rate 115200).
+    3: Reconfigures the lora module's baud rate to 9600.
+    4: Initializes the lora module communication configurations.
+    5: Print out the lora responses back to the arduino serial monitor
+    6: Sends AT commands to capture the set state of the parameters which
+       were applied to the lora module.
+    7: Print the lora responses to the arduino serial monitor.
+    8: Sends a message to device #2.
+
+Notes: (Not and expert here just what worked for me)
+    When running the sketch, I ran into an issue with the Baud rates on the lora module.   This issue
+    ocurred when I sent the AT+FACTORY command to the module and it reset the internal baud rate to 115200.
+    Since the SoftwareSerial connection was coded with a baud rate of 9600, I was no longer able to send the
+    commands to the lora device leading to garbled messages.  I found by first setting the SoftwareSerial
+    to 115200 I was able to then reset the internal lora baud rate to 9600 and resume with my project.
+
+
+
+
+

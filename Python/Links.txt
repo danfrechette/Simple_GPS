@@ -8,3 +8,6 @@ Lora AT Commands: https://reyax.com/upload/products_download/download_file/LoRa-
 
 https://www.blackhillsinfosec.com/introducing-lora-long-range-wireless-technology-part-1/
 
+
+Direct Per to Per Communication: https://www.youtube.com/watch?v=niBWh0Xq9Zg
+
