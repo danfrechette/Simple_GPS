@@ -2,7 +2,7 @@ import re
 import os
 import time
 import random
-import gps
+# import gps
 import serial
 import subprocess
 from itertools import cycle
