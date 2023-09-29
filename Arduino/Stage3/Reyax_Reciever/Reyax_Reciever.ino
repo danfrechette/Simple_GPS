@@ -1,10 +1,6 @@
 #include <SoftwareSerial.h>
 
-String Lora_Message(Sting Msg){
-  String AT_Cmd = "AT+SEND=" + NODE_ADDRESS_FOREIGN + ",";
-  AT_Cmd += String(Msg.length()) + "," + Msg;
-  return AT_Cmd
-}
+
 
 #define rxPin 3
 #define txPin 2
@@ -14,8 +10,8 @@ String IncomingString;
 String AT_Cmd;
 String FREQUENCY_BAND = "433000000";
 String NETWORK_ID = "7";
-String NODE_ADDRESS_NATIVE = "2";
-String NODE_ADDRESS_FOREIGN = "1";
+String NODE_ADDRESS_NATIVE = "1";
+String NODE_ADDRESS_FOREIGN = "2";
 
 bool Flip = true;
 
@@ -26,7 +22,7 @@ void setup() {
   Serial.println("Started Arduino Serial Connection.");
 
   Serial.println("\tStarted Reyax Serial Connection @ 155200 Baud Rate.");
-    lora_serial.begin(115200); while(!lora_serial);  // delay(1000);
+    lora_serial.begin(115200); while(!lora_serial);  
     lora_serial.println("AT+IPR=9600"); delay(1000);
 
   Serial.println("\tResetting Reyax Receiver to 9600 Baud Rate.");
@@ -64,13 +60,16 @@ void loop() {
     IncomingString = lora_serial.readStringUntil('\n');
 
     if(IncomingString.length() > 2){
-      if(stringOne.startsWith("+RCV=")){
+      Serial.println(IncomingString);
+      Serial.println(IncomingString.startsWith("+RCV="));
+      if(IncomingString.startsWith("+RCV=") == true){
 
         int s = IncomingString.indexOf("["); int e = IncomingString.indexOf("]");
 
         if(s > 0 and e> 0){
-          AT_CMD = Lora_Message( "Thanks received :" + IncomingString.substring(s,++e));
+          AT_Cmd = Lora_Message( "Thanks received :" + IncomingString.substring(s,++e));
           Serial.print("Sending Acknowledgement --> : "); Serial.println(AT_Cmd);
+          
           lora_serial.println(AT_Cmd);
         }
       }
@@ -81,3 +80,8 @@ void loop() {
   }
 }
 
+String Lora_Message(String Msg){
+  String AT_Cmd = "AT+SEND=" + NODE_ADDRESS_FOREIGN + ",";
+  AT_Cmd += String(Msg.length()) + "," + Msg;
+  return AT_Cmd;
+}

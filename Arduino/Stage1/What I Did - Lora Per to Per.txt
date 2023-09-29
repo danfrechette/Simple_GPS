@@ -33,7 +33,7 @@ device #2 should print a message starting with +RCV such as +RCV=1,5,HELLO,-99,4
 Send AT Message to device #2 from device #1 (RYLR405 Connected to my Laptop)
 Note: After each AT+Send command you should see a response like: +OK on device #2
 device #1 should print a message starting with +RCV such as +RCV=2,5,HELLO,-99,40
-	AT+SEND=2,5,HELLO
+	AT+SEND=1,5,HELLO
 
 If failure occurs sent the following AT command and repeat the above.
 Note: after each AT command you should see a responce like: +FACTORY

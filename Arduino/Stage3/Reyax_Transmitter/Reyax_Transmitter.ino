@@ -1,11 +1,5 @@
 #include <SoftwareSerial.h>
 
-String Lora_Message(Sting Msg){
-  String AT_Cmd = "AT+SEND=" + NODE_ADDRESS_FOREIGN + ",";
-  AT_Cmd += String(Msg.length()) + "," + Msg;
-  return AT_Cmd
-}
-
 #define rxPin 3
 #define txPin 2
 SoftwareSerial lora_serial(rxPin, txPin);
@@ -14,8 +8,8 @@ String IncomingString;
 String AT_Cmd;
 String FREQUENCY_BAND="433000000";
 String NETWORK_ID="7";
-String NODE_ADDRESS_NATIVE="1";
-String NODE_ADDRESS_FOREIGN="2";
+String NODE_ADDRESS_NATIVE="2";
+String NODE_ADDRESS_FOREIGN="1";
 int Cntr = 0;
 
 void setup() {
@@ -68,7 +62,7 @@ void loop() {
     IncomingString = lora_serial.readStringUntil('\n');
     if(IncomingString.length() > 2){
 
-      if(stringOne.startsWith("+RCV=")){
+      if(IncomingString.startsWith("+RCV=")){
         Serial.print("\tIncoming Message: "); Serial.println(IncomingString);
       }
       else {
@@ -80,3 +74,8 @@ void loop() {
   }
 }
 
+String Lora_Message(String Msg){
+  String AT_Cmd = "AT+SEND=" + NODE_ADDRESS_FOREIGN + ",";
+  AT_Cmd += String(Msg.length()) + "," + Msg;
+  return AT_Cmd;
+}
