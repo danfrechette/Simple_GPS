@@ -17,3 +17,14 @@ Oled:
 https://simple-circuit.com/arduino-ssd1306-oled-i2c-spi-example/
 https://simple-circuit.com/arduino-ssd1306-dht11-dht22/
 
+
+
+https://www.instructables.com/OLED-I2C-DISPLAY-WITH-ARDUINO-Tutorial/
+
+https://www.youtube.com/watch?v=7ph5ov56cfg
+
+https://www.youtube.com/watch?app=desktop&v=YCkFFtVEEG4
+
+https://www.youtube.com/watch?app=desktop&v=0HwJNJNZOXU
+
+https://www.electroniclinic.com/arduino-oled-i2c-display-128x64-with-examples-wiring-and-libraries-issues-solved/
